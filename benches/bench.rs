@@ -271,4 +271,26 @@ mod tests {
             black_box(sh.eval(&p));
         });
     }
+
+    #[bench]
+    fn eval_complex_degree_5(b: &mut Bencher) {
+        let sh_type = ComplexSHType::Spherical;
+        let degree = 5;
+        let sh: HarmonicsSet<f64, _, _> = HarmonicsSet::new(degree, sh_type);
+        let p = Coordinates::spherical(1.0, PI / 2.0, 0.0);
+        b.iter(|| {
+            black_box(sh.eval(&p));
+        });
+    }
+
+    #[bench]
+    fn eval_complex_degree_10(b: &mut Bencher) {
+        let sh_type = ComplexSHType::Spherical;
+        let degree = 10;
+        let sh: HarmonicsSet<f64, _, _> = HarmonicsSet::new(degree, sh_type);
+        let p = Coordinates::spherical(1.0, PI / 2.0, 0.0);
+        b.iter(|| {
+            black_box(sh.eval(&p));
+        });
+    }
 }
