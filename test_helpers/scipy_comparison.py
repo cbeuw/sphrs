@@ -15,7 +15,7 @@ def main():
     num_thetas = 2 * num_phis
     thetas = [2 * pi / num_thetas * x for x in list(range(0, num_thetas, 1))]
     phis = [pi / num_phis * x for x in list(range(0, num_phis, 1))]
-    n_max = 10
+    n_max = 20
     print("n,m,theta,phi,sph_re,sph_im")
     for n in range(0, n_max + 1):
         for m in range(-n, n + 1):
