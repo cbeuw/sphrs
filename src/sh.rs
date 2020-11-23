@@ -135,10 +135,35 @@ pub fn sh3p3<T: SphrsFloat>(p: &dyn SHCoordinates<T>) -> T {
         / p.r().powi(3)
 }
 
-/// Factorial
 #[inline]
-fn factorial(n: u64) -> u64 {
-    (1..=n).product()
+fn factorial<T: SphrsFloat>(n: u64) -> T {
+    const TABLE_SIZE: usize = 16;
+    const FACTS_TABLE: [f64; TABLE_SIZE] = [
+        1.,
+        1.,
+        2.,
+        6.,
+        24.,
+        120.,
+        720.,
+        5040.,
+        40320.,
+        362880.,
+        3628800.,
+        39916800.,
+        479001600.,
+        6227020800.,
+        87178291200.,
+        1307674368000.,
+    ];
+    if n < TABLE_SIZE as u64 {
+        T::from_f64(FACTS_TABLE[n as usize]).unwrap()
+    } else {
+        (TABLE_SIZE as u64..=n).fold(
+            T::from_f64(FACTS_TABLE[TABLE_SIZE - 1]).unwrap(),
+            |a: T, b: u64| a * T::from_u64(b).unwrap(),
+        )
+    }
 }
 
 /// Normalization factor
@@ -146,10 +171,8 @@ fn factorial(n: u64) -> u64 {
 #[inline]
 fn K<T: SphrsFloat>(l: i64, m: i64) -> T {
     ((T::from_f64(2.0).unwrap() * T::from_i64(l).unwrap() + T::one())
-        * T::from_u64(factorial((l - m.abs()) as u64)).unwrap()
-        / (T::from_f64(4.0).unwrap()
-            * T::PI()
-            * T::from_u64(factorial((l + m.abs()) as u64)).unwrap()))
+        * factorial((l - m.abs()) as u64)
+        / (T::from_f64(4.0).unwrap() * T::PI() * factorial((l + m.abs()) as u64)))
     .sqrt()
 
     // let m = m.abs();
