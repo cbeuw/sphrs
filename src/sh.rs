@@ -135,7 +135,6 @@ pub fn sh3p3<T: SphrsFloat>(p: &dyn SHCoordinates<T>) -> T {
         / p.r().powi(3)
 }
 
-#[inline]
 fn factorial<T: SphrsFloat>(n: u64) -> T {
     const TABLE_SIZE: usize = 16;
     const FACTS_TABLE: [f64; TABLE_SIZE] = [
